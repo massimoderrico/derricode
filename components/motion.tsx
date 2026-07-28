@@ -15,7 +15,7 @@ export function Reveal({ children, delay = 0, direction = 'up', className = '' }
 
 export function StaggeredHeadline({ lines }: { lines: ReactNode[] }) {
   const reduced = useReducedMotion() ?? true
-  return <span className="headline-lines" aria-label={lines.map(String).join(' ')}>{lines.map((line, index) => <span className="headline-line" key={index}><motion.span initial={reduced ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduced ? 0 : .58, delay: reduced ? 0 : .08 + index * .09, ease }}>{line}</motion.span></span>)}</span>
+  return <span className="headline-lines">{lines.map((line, index) => <span className="headline-line" key={index}><motion.span initial={reduced ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduced ? 0 : .58, delay: reduced ? 0 : .08 + index * .09, ease }}>{line}</motion.span></span>)}</span>
 }
 
 export function MagneticLink({ children, className = '' }: { children: ReactNode; className?: string }) {
