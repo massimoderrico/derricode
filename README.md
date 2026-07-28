@@ -1,74 +1,55 @@
 # Derricode — AI implementation & software studio
 
-A production-ready Vite + React site for Derricode. It positions the studio around AI implementation, AI automations, full-stack web/mobile applications, APIs, and MCP integrations.
+Derricode is a Next.js App Router site for an AI implementation and software studio. It preserves the original white/light foundation with blue and black accents, the full multi-page story, Framer Motion interactions, and an honest email-draft contact flow.
 
-**Local path:** `/home/massimo/derricode`
-
-## Setup
+## Run locally
 
 ```bash
 npm install
 npm run dev
 ```
 
-Build and verify:
+Production checks:
 
 ```bash
-npm run build       # TypeScript + Vite production build
-npm run lint        # oxlint
-npm run preview     # local production preview
+npm run lint
+npm run build
+npm run test:smoke
+npm audit --omit=dev --audit-level=high
+npm run start
 ```
 
-## Site structure
+## Routes
 
-The app uses a small client-side router built on the History API, so each page has a shareable route while Vite serves the same entry point:
+- `/` — point of view, services, system model, and CTA
+- `/services` — AI implementation, automations, applications, and integrations
+- `/process` — four-stage delivery approach
+- `/capabilities` — web, mobile, APIs, MCP, internal tools, and automation
+- `/contact` — accessible project-intake form that opens an email draft
+- unknown paths — explicit branded 404 response with HTTP 404
 
-- `/` — Home: Derricode's point of view, services, system model, and CTA
-- `/services` — AI implementation, AI automation, and application/integration services
-- `/process` — Four-stage delivery approach
-- `/capabilities` — Web, mobile, APIs, MCP, internal AI tools, and automation capabilities
-- `/contact` — Accessible project-intake form that opens an explicitly labeled email draft, plus direct email CTA
-- Unknown paths — Branded 404 page with a route back home
+## Structure
 
-Shared navigation and footer are rendered around every route. The nav includes a mobile menu, a skip link, visible focus states, keyboard-friendly native controls, and touch-sized targets.
+- `app/` — App Router layouts, routes, metadata, and `not-found.tsx`
+- `components/` — navigation, motion wrappers, and page sections
+- `content/` — structured services, process, and capability copy
+- `lib/` — route and contact helpers
+- `public/` — static assets
+- `scripts/smoke.mjs` — Next production-server route and behavior smoke test
 
-## Design decisions
+## Design and content notes
 
-- **Surface:** Decide / Learn. The narrative moves from the business problem, to Derricode's point of view, to services, delivery, technical scope, and a direct contact CTA.
-- **Color system:** Decisive blue, white, and black. `#195cff` is the action and signal accent; white surfaces carry readable content; black and blue sections provide contrast.
-- **Typography:** Space Grotesk provides a technical editorial voice for headings, Manrope keeps body copy readable, and DM Mono is reserved for operational labels and metadata.
-- **Composition:** Editorial section transitions, a dark system-map visual, blue signal strip, long-form service rows, process timeline, capability index, and focused CTA. No fake dashboard numbers, stock imagery, generic testimonial blocks, or invented social proof.
-- **Motion:** `framer-motion` handles route transitions, hero entrance, and in-view section reveals. Every motion surface uses `useReducedMotion()`; reduced motion uses zero duration and no opacity/distance/scale changes. CSS also disables smooth scrolling and transform-based hover motion.
-- **Content discipline:** Copy is specific to implementation, automation, full-stack products, APIs, and MCP. No invented clients, awards, testimonials, metrics, or unsupported claims.
+The site uses a Decide/Learn narrative: business constraint → point of view → services → process → technical scope → contact. The design system keeps white surfaces readable and uses decisive blue (`#195cff`) plus black for signal and contrast. Space Grotesk, Manrope, and DM Mono provide the editorial/technical voice.
 
-## Frontend design workflows used
+Framer Motion powers page and section reveals. `useReducedMotion()` makes motion static and zero-duration, with CSS reduced-motion overrides as a second layer. Navigation uses native links, a keyboard-accessible mobile menu, skip link, visible focus states, semantic landmarks, and touch-sized controls.
 
-- `frontend-product-build`: repository inspection, Decide/Learn composition, dependency verification, semantic structure, accessibility, responsive behavior, reduced-motion treatment, and install/lint/build verification.
-- `claude-design`: source-first design process, deliberate surface choice, editorial composition, motion as continuity, and anti-slop audit.
-- UI/UX Pro Max: the repository's `.codex/skills/ui-ux-pro-max` search workflow was used to generate a design-system recommendation for an AI implementation/software studio. The final implementation adapts the recommendation into original Derricode tokens and layout rather than copying a component or proprietary code.
+The contact form does **not** send data to Derricode. It validates the required fields and opens a pre-addressed draft to `hello@derricode.com`; the visitor must explicitly send it.
 
-UI/UX Pro Max references:
+## Reference workflows
 
-- https://github.com/nextlevelbuilder/ui-ux-pro-max-skill
-- https://www.npmjs.com/package/uipro-cli
+- UI/UX Pro Max remains available through `.codex/skills/ui-ux-pro-max`; the implementation adapts its recommendations into original Derricode tokens and layout.
+- Package/reference: https://www.npmjs.com/package/uipro-cli
+- Design reference notes: https://github.com/nextlevelbuilder/ui-ux-pro-max-skill
+- gstack setup/instructions: https://github.com/garrytan/gstack
 
-## gstack setup
-
-The gstack README and setup script were inspected before installation:
-
-- https://github.com/garrytan/gstack
-- https://raw.githubusercontent.com/garrytan/gstack/main/README.md
-
-Following the documented team-mode flow, gstack was cloned to `~/.claude/skills/gstack`, built with the official Bun runtime installed through the official `bun` npm package, and initialized for this repository with:
-
-```bash
-(cd ~/.claude/skills/gstack && ./setup --team)
-~/.claude/skills/gstack/bin/gstack-team-init required
-```
-
-The setup generated the repository's `CLAUDE.md` gstack instructions and `.claude/hooks/check-gstack.sh` enforcement hook. The gstack build completed, but its optional Playwright Chromium download could not install on this environment's `ubuntu26.04-x64`; the source install and team initialization still completed. Re-run `cd ~/.claude/skills/gstack && ./setup --team` on a supported host if the browser binary is needed.
-
-## Notes
-
-- The contact form is an honest email-draft workflow: it validates required fields, opens a pre-addressed draft to `hello@derricode.com`, and explicitly says no message has been sent until the visitor sends it.
-- `vercel.json` rewrites all deep links to the Vite entry point for SPA routing. No Vercel deployment was performed; direct deployed-route verification remains pending Op's deployment.
+No Vercel deployment is performed by this migration; the project is configured for direct Next/Vercel deep links without SPA rewrites.
