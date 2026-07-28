@@ -7,8 +7,8 @@ from openpyxl.utils import get_column_letter
 from bs4 import BeautifulSoup
 
 API='http://127.0.0.1:3002'
-XLSX='/home/massimo/derricode_tennessee_10k_leads.xlsx'
-README='/home/massimo/derricode_tennessee_10k_leads_README.md'
+XLSX='/home/massimo/derricode/scraping/data/derricode_tennessee_10k_leads.xlsx'
+README='/home/massimo/derricode/scraping/data/derricode_tennessee_10k_leads_README.md'
 TODAY=str(date.today())
 HEADERS=['Business Name','Category','Owner Name','Owner Title','Owner LinkedIn URL','Public Business Email','Public Business Phone','Owner Public Business Email','Owner Public Business Phone','Address','City','State','ZIP','Website URL','Website Status','Website Evidence','Source URL','Research Date','Mockup HTML Path','Notes']
 TOWNS=['Franklin','Brentwood','Hendersonville','Mount Juliet','Murfreesboro','Smyrna','Gallatin','Lebanon','Clarksville','Spring Hill','Columbia','Nolensville','Antioch','La Vergne','Goodlettsville','Dickson','Springfield','Ashland City','Portland','White House','Fairview','Thompsons','Kingston Springs','Joelton','Belle Meade','Forest Hills','Oak Hill','Berry Hill','Millersville','Greenbrier','Pleasant View','Watertown','Cross Plains','College Grove','Arrington','Eagleville','Shelbyville','Lewisburg','Tullahoma','Cookeville','Knoxville','Chattanooga','Johnson City','Jackson','Memphis']

@@ -5,7 +5,7 @@ from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Font, PatternFill, Border, Side, Alignment
 from openpyxl.worksheet.table import Table, TableStyleInfo
 
-OUT='/home/massimo/derricode_tennessee_10k_leads.xlsx'
+OUT='/home/massimo/derricode/scraping/data/derricode_tennessee_10k_leads.xlsx'
 TODAY=str(date.today())
 HEADERS=['Business Name','Category','Owner Name','Owner Title','Owner LinkedIn URL','Public Business Email','Public Business Phone','Owner Public Business Email','Owner Public Business Phone','Address','City','State','ZIP','Website URL','Website Status','Website Evidence','Source URL','Research Date','Mockup HTML Path','Notes']
 UA={'User-Agent':'Hermes-Requests-v2-public-business-research/1.0 (lawful public data; no access-control bypass)'}
