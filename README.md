@@ -38,7 +38,7 @@ The visual composition borrows principles—not layouts or identity—from premi
 
 ## Motion and accessibility
 
-Framer Motion powers page entrances and section reveals. `useReducedMotion()` and CSS reduced-motion rules remove transforms and durations for users who prefer less motion. The site includes semantic landmarks, a skip link, keyboard-friendly native controls, visible focus states, labeled form fields, responsive navigation, and 44px minimum interactive targets.
+Framer Motion powers page entrances, staggered editorial headline reveals, a quiet scroll-progress rail, tactile CTA feedback, and directional section/list continuity. The motion layer is intentionally short and secondary to the message: no looping spectacle, gradients, glass, or cursor gimmicks. `useReducedMotion()` and CSS reduced-motion rules remove transforms, hide the progress rail, and set durations to zero for users who prefer less motion; touch layouts keep the same content without hover-dependent meaning. The site includes semantic landmarks, a skip link, keyboard-friendly native controls, visible focus states, labeled form fields, responsive navigation, and 44px minimum interactive targets.
 
 Contact is intentionally honest: the form validates locally and opens a pre-addressed `mailto:hello@derricode.com` draft. Nothing is claimed to be sent until the visitor reviews and sends it.
 
