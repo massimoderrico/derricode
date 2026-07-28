@@ -56,6 +56,7 @@ Contact is intentionally honest: the form validates locally and opens a pre-addr
 - Framer principles: https://www.framer.com/
 - Stripe principles: https://stripe.com/
 - SpaceX principles: https://www.spacex.com/
+- 21st.dev public animation/component reference: https://21st.dev/
 - claude-design and popular-web-designs guidance were used as process/reference inputs; Derricode's layouts and copy remain original.
 
 No fabricated metrics, testimonials, client logos, or unsupported claims were added. No deployment is performed by this repository workflow.
