@@ -1,76 +1,96 @@
-import { motion, useReducedMotion } from 'framer-motion'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import type { FormEvent, ReactNode } from 'react'
 import './index.css'
 
-type Service = { number: string; title: string; summary: string; detail: string }
+type RouteKey = '/' | '/services' | '/process' | '/capabilities' | '/contact'
 
-const services: Service[] = [
-  { number: '01', title: 'AI implementation', summary: 'Make AI useful inside the business.', detail: 'We turn a real priority into a scoped use case, an operating model, and a working implementation your team can understand.' },
-  { number: '02', title: 'AI automations', summary: 'Remove the handoffs that slow work down.', detail: 'We connect inboxes, documents, business tools, and approvals into workflows designed around how work actually happens.' },
-  { number: '03', title: 'Software & integrations', summary: 'Build the product layer around the opportunity.', detail: 'We design and ship full-stack web and mobile applications, APIs, and MCP integrations that connect assistants to approved tools and data.' },
+const navItems: { href: RouteKey; label: string }[] = [
+  { href: '/', label: 'Home' },
+  { href: '/services', label: 'Services' },
+  { href: '/process', label: 'Process' },
+  { href: '/capabilities', label: 'Capabilities' },
 ]
 
-const process = [
-  ['01', 'Discover', 'Start with the business goal, the people involved, the current workflow, and the constraints that matter.'],
-  ['02', 'Shape the first release', 'Choose a focused first outcome. Define the experience, data, integrations, and boundaries before code makes the decision expensive.'],
-  ['03', 'Implement in the open', 'Build working software and automation in visible increments so feedback is part of the delivery, not a final handoff.'],
-  ['04', 'Iterate and enable', 'Refine what the system does, document the moving parts, and leave a clear path for your team to operate and extend it.'],
+const services = [
+  { number: '01', title: 'AI implementation', summary: 'Turn a real business priority into a useful system.', detail: 'We scope the use case, shape the operating model, and implement the right combination of model, context, tools, and human review.' },
+  { number: '02', title: 'AI automations', summary: 'Make repeatable work move without the handoffs.', detail: 'We connect inboxes, documents, approvals, and business software into workflows that fit the way your team already operates.' },
+  { number: '03', title: 'Applications & integrations', summary: 'Build the product layer around the opportunity.', detail: 'We ship full-stack web and mobile apps, APIs, and MCP integrations that make AI capabilities reliable and usable.' },
 ]
 
-const capabilities = ['Responsive web products', 'Native-feeling mobile experiences', 'APIs and data workflows', 'MCP servers and client integrations', 'AI-assisted internal tools', 'Automation across existing software']
+const processSteps = [
+  ['01', 'Discover the constraint', 'We start with the business goal, the people involved, the current workflow, and the constraints that matter.'],
+  ['02', 'Shape the first release', 'We choose a focused first outcome and define the experience, data, integrations, and boundaries before code makes decisions expensive.'],
+  ['03', 'Implement in the open', 'We build working software and automation in visible increments so feedback is part of delivery, not a final handoff.'],
+  ['04', 'Iterate and enable', 'We refine what the system does, document the moving parts, and leave a clear path for your team to operate and extend it.'],
+]
+
+const capabilities = [
+  ['01', 'Web products', 'Responsive, accessible interfaces with a clear path from first interaction to useful outcome.'],
+  ['02', 'Mobile apps', 'Native-feeling mobile experiences for customer workflows and internal operations.'],
+  ['03', 'APIs & data workflows', 'Typed services and integrations that move approved data between the systems you already use.'],
+  ['04', 'MCP integrations', 'MCP servers and clients that give assistants explicit, permissioned access to tools and data.'],
+  ['05', 'Internal AI tools', 'Focused copilots and operator interfaces grounded in the context your team needs.'],
+  ['06', 'Automation', 'Event-driven workflows for documents, communication, approvals, and recurring operations.'],
+]
+
+function normalizePath(): RouteKey {
+  const path = window.location.pathname.replace(/\/$/, '') || '/'
+  return navItems.some((item) => item.href === path) || path === '/contact' ? path as RouteKey : '/'
+}
+
+function Link({ href, children, className = '', onClick }: { href: RouteKey; children: ReactNode; className?: string; onClick?: () => void }) {
+  const navigate = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault()
+    window.history.pushState({}, '', href)
+    window.dispatchEvent(new PopStateEvent('popstate'))
+    onClick?.()
+  }
+  return <a href={href} className={className} onClick={navigate}>{children}</a>
+}
+
+function Reveal({ children, delay = 0, className = '' }: { children: ReactNode; delay?: number; className?: string }) {
+  const reduced = useReducedMotion()
+  return <motion.div className={className} initial={{ opacity: 0, y: reduced ? 0 : 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-80px' }} transition={{ duration: reduced ? 0 : 0.55, delay: reduced ? 0 : delay }}>{children}</motion.div>
+}
 
 function NetworkMark() {
   return <svg className="network-mark" viewBox="0 0 420 300" role="img" aria-label="Connected nodes representing a business system">
     <path className="wire" d="M42 224 126 81 226 164 316 50 378 223 226 164 126 241Z" />
     <path className="wire faint" d="m42 224 184-60 152 59M126 81l190-31M126 241l100-77" />
     {[[42,224,'small'],[126,81,'small'],[226,164,'core-node'],[316,50,'small'],[378,223,'small'],[126,241,'small']].map(([x, y, c]) => <circle key={`${x}-${y}`} className={`node ${c}`} cx={x} cy={y} r={c === 'core-node' ? 18 : 9} />)}
-    <circle className="core-ring" cx="226" cy="164" r="34" />
-    <text x="226" y="170" textAnchor="middle">D</text>
+    <circle className="core-ring" cx="226" cy="164" r="34" /><text x="226" y="170" textAnchor="middle">D</text>
   </svg>
 }
 
-function Reveal({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
-  const reduceMotion = useReducedMotion()
-  return <motion.div className={className} initial={{ opacity: 0, y: reduceMotion ? 0 : 22 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-70px' }} transition={{ duration: 0.65, delay }}>{children}</motion.div>
+function PageIntro({ kicker, title, accent, children }: { kicker: string; title: string; accent: string; children: ReactNode }) {
+  return <section className="page-intro wrap"><Reveal><p className="eyebrow"><span className="pulse" />{kicker}</p><h1>{title}<br /><em>{accent}</em></h1><p className="lede">{children}</p></Reveal></section>
 }
 
-function App() {
-  return <div className="site-shell">
-    <header className="nav wrap">
-      <a className="brand" href="#top" aria-label="Derricode home"><span className="brand-mark">D</span><span>DERRICODE</span></a>
-      <nav aria-label="Primary navigation"><a href="#approach">Approach</a><a href="#services">Services</a><a href="#process">Process</a><a href="#contact" className="nav-cta">Start a conversation <span>↗</span></a></nav>
-    </header>
-
-    <main id="top">
-      <section className="hero wrap">
-        <div className="hero-copy">
-          <motion.p className="eyebrow" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: .5 }}><span className="pulse" />AI implementation & software studio</motion.p>
-          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7, delay: .08 }}>Make the next move<br /><em>useful.</em></motion.h1>
-          <motion.p className="lede" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .6, delay: .18 }}>Derricode helps businesses move from AI interest to working systems — implementing AI, automating operations, and building the software around the opportunity.</motion.p>
-          <motion.div className="hero-actions" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: .6, delay: .28 }}><a className="button button-blue" href="#contact">Talk through an opportunity <span>↗</span></a><a className="text-link" href="#approach">See our point of view <span>↓</span></a></motion.div>
-        </div>
-        <motion.div className="hero-art" initial={{ opacity: 0, scale: .97 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: .8, delay: .15 }}><div className="art-label">SYSTEM MAP / 001</div><NetworkMark /><div className="art-caption"><span>Business need in. Useful system out.</span><span className="mono">[ BUILD / ITERATE ]</span></div><div className="art-index">01—04</div></motion.div>
-      </section>
-
-      <section className="signal-strip" aria-label="Derricode focus areas"><div className="wrap signal-inner"><span>AI implementation</span><i>+</i><span>workflow automation</span><i>+</i><span>web & mobile software</span><i>+</i><span>MCP integrations</span></div></section>
-
-      <section id="approach" className="problem-section section"><div className="wrap problem-grid"><Reveal><div className="section-kicker">01 — The opportunity</div><h2>AI is easy to discuss.<br /><span>Implementation is the work.</span></h2></Reveal><Reveal delay={.1} className="problem-copy"><p className="big-copy">Most businesses do not need another abstract AI strategy. They need a clear decision about where the technology belongs, how it fits the way people work, and what should be built first.</p><p>That is where Derricode comes in. We connect business context to technical execution, without losing sight of the operators, customers, data, and systems involved.</p></Reveal></div></section>
-
-      <section className="point-section section"><div className="wrap point-grid"><Reveal><div className="section-kicker light-kicker">02 — Our point of view</div><h2>Useful beats<br /><em>impressive.</em></h2></Reveal><Reveal delay={.12} className="point-notes"><div className="point-note"><b>01</b><p>Start with a meaningful business constraint, not a fashionable tool.</p></div><div className="point-note"><b>02</b><p>Design the human workflow and the technical system together.</p></div><div className="point-note"><b>03</b><p>Ship a first version that can be observed, operated, and improved.</p></div></Reveal></div></section>
-
-      <section id="services" className="services-section section"><div className="wrap"><Reveal><div className="section-kicker">03 — Three ways to move</div><div className="section-heading"><h2>One partner for<br /><span>the connected work.</span></h2><p>Choose the starting point that matches the problem. The three pillars can stand alone or come together as one implementation.</p></div></Reveal><div className="service-list">{services.map((service, i) => <Reveal key={service.number} delay={i * .08}><article className="service-row"><span className="service-number">{service.number}</span><div className="service-symbol" aria-hidden="true">{service.number === '01' ? '◎' : service.number === '02' ? '↻' : '⌘'}</div><div className="service-title"><h3>{service.title}</h3><p>{service.summary}</p></div><p className="service-detail">{service.detail}</p><span className="service-arrow" aria-hidden="true">↗</span></article></Reveal>)}</div></div></section>
-
-      <section className="systems-section section"><div className="wrap systems-grid"><Reveal><div className="section-kicker light-kicker">04 — The system, not the silo</div><h2>Agents, automation,<br /><em>software.</em></h2></Reveal><Reveal delay={.12} className="systems-copy"><p className="big-copy">An AI agent is only as useful as the context, tools, and permissions around it. Automation gives repeatable work a path. Software gives people a reliable interface.</p><div className="system-flow"><div><b>01</b><span>Agents</span><small>Reason over approved context</small></div><div className="flow-line" /><div><b>02</b><span>Automations</span><small>Move work between systems</small></div><div className="flow-line" /><div><b>03</b><span>Software</span><small>Make the result usable</small></div></div></Reveal></div></section>
-
-      <section id="process" className="process-section section"><div className="wrap"><Reveal><div className="section-kicker">05 — Delivery, in practice</div><div className="process-intro"><h2>From discovery<br /><span>to iteration.</span></h2><p>Good implementation is a sequence of useful decisions. We keep each one visible, testable, and close to the business context.</p></div></Reveal><div className="process-list">{process.map(([number, title, text], i) => <Reveal key={number} delay={i * .06}><div className="process-item"><span className="process-number">{number}</span><div><h3>{title}</h3><p>{text}</p></div><span className="process-marker" aria-hidden="true">↘</span></div></Reveal>)}</div></div></section>
-
-      <section className="capabilities-section section"><div className="wrap capabilities-grid"><Reveal><div className="section-kicker">06 — Technical capabilities</div><h2>Built for the<br /><span>real stack.</span></h2></Reveal><Reveal delay={.1} className="capability-panel"><p>From a focused internal workflow to a customer-facing product, the implementation can meet your existing systems where they are.</p><ul>{capabilities.map((capability, i) => <li key={capability}><span>0{i + 1}</span>{capability}</li>)}</ul></Reveal></div></section>
-
-      <section className="working-section section"><div className="wrap working-grid"><Reveal><div className="section-kicker">07 — Working with Derricode</div><h2>A thoughtful<br /><span>technical partner.</span></h2></Reveal><Reveal delay={.1} className="working-copy"><p className="big-copy">Bring the business question, the rough idea, or the workflow that keeps breaking. We will help make the next decision concrete.</p><div className="working-steps"><p><b>Direct</b><span>One clear line from question to implementation.</span></p><p><b>Specific</b><span>Plain-language tradeoffs and defined next steps.</span></p><p><b>Collaborative</b><span>Feedback loops that keep the system grounded.</span></p></div></Reveal></div></section>
-
-      <section id="contact" className="contact wrap section"><div className="contact-card"><div><div className="section-kicker light-kicker">08 — Start a project</div><h2>Have a system<br /><em>in mind?</em></h2><p>Tell us what you are trying to improve, automate, or build. We will reply with a practical way to start.</p><a className="button button-light" href="mailto:hello@derricode.com">hello@derricode.com <span>↗</span></a></div><div className="contact-mark" aria-hidden="true">D<span>/</span></div></div></section>
-    </main>
-    <footer className="footer wrap"><span>© {new Date().getFullYear()} DERRICODE</span><span>AI systems, automations, and applications.</span><a href="#top">Back to top ↑</a></footer>
-  </div>
+function Cta() {
+  return <section className="contact wrap section"><div className="contact-card"><div><div className="section-kicker light-kicker">Next step</div><h2>Have a system<br /><em>in mind?</em></h2><p>Tell us what you are trying to improve, automate, or build. We will reply with a practical way to start.</p><Link className="button button-light" href="/contact">Start a conversation <span>↗</span></Link></div><div className="contact-mark" aria-hidden="true">D<span>/</span></div></div></section>
 }
+
+function Home() {
+  return <>
+    <section className="hero wrap"><div className="hero-copy"><Reveal><p className="eyebrow"><span className="pulse" />AI implementation & software studio</p><h1>Make the next move<br /><em>useful.</em></h1><p className="lede">Derricode helps businesses move from AI interest to working systems — implementing AI, automating operations, and building the software around the opportunity.</p><div className="hero-actions"><Link className="button button-blue" href="/contact">Talk through an opportunity <span>↗</span></Link><Link className="text-link" href="/services">Explore the work <span>↓</span></Link></div></Reveal></div><motion.div className="hero-art" initial={{ opacity: 0, scale: .98 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: .7 }}><div className="art-label">SYSTEM MAP / 001</div><NetworkMark /><div className="art-caption"><span>Business need in. Useful system out.</span><span className="mono">[ BUILD / ITERATE ]</span></div><div className="art-index">01—04</div></motion.div></section>
+    <section className="signal-strip" aria-label="Derricode focus areas"><div className="wrap signal-inner"><span>AI implementation</span><i>+</i><span>workflow automation</span><i>+</i><span>web & mobile software</span><i>+</i><span>MCP integrations</span></div></section>
+    <section className="section"><div className="wrap split"><Reveal><div className="section-kicker">01 — The opportunity</div><h2>AI is easy to discuss.<br /><span>Implementation is the work.</span></h2></Reveal><Reveal delay={.1}><p className="big-copy">Most businesses do not need another abstract AI strategy. They need a clear decision about where the technology belongs, how it fits the way people work, and what should be built first.</p><p>Derricode connects business context to technical execution, without losing sight of the operators, customers, data, and systems involved.</p></Reveal></div></section>
+    <section className="dark-section section"><div className="wrap split"><Reveal><div className="section-kicker light-kicker">02 — Our point of view</div><h2>Useful beats<br /><em>impressive.</em></h2></Reveal><Reveal delay={.1} className="point-notes">{['Start with a meaningful business constraint, not a fashionable tool.', 'Design the human workflow and the technical system together.', 'Ship a first version that can be observed, operated, and improved.'].map((note, i) => <div className="point-note" key={note}><b>0{i + 1}</b><p>{note}</p></div>)}</Reveal></div></section>
+    <section className="section"><div className="wrap"><Reveal><div className="section-kicker">03 — Three ways to move</div><div className="section-heading"><h2>One partner for<br /><span>the connected work.</span></h2><p>Choose the starting point that matches the problem. The three pillars can stand alone or come together as one implementation.</p></div></Reveal><ServiceList /></div></section>
+    <section className="blue-section section"><div className="wrap split"><Reveal><div className="section-kicker light-kicker">04 — The system, not the silo</div><h2>Agents, automation,<br /><em>software.</em></h2></Reveal><Reveal delay={.1}><p className="big-copy">An AI agent is only as useful as the context, tools, and permissions around it. Automation gives repeatable work a path. Software gives people a reliable interface.</p><SystemFlow /></Reveal></div></section>
+    <Cta />
+  </>
+}
+
+function ServiceList() { return <div className="service-list">{services.map((service, i) => <Reveal key={service.number} delay={i * .08}><article className="service-row"><span className="service-number">{service.number}</span><div className="service-symbol" aria-hidden="true">{service.number === '01' ? '◎' : service.number === '02' ? '↻' : '⌘'}</div><div className="service-title"><h3>{service.title}</h3><p>{service.summary}</p></div><p className="service-detail">{service.detail}</p><span className="service-arrow" aria-hidden="true">↗</span></article></Reveal>)}</div> }
+function SystemFlow() { return <div className="system-flow">{['Agents|Reason over approved context', 'Automations|Move work between systems', 'Software|Make the result usable'].map((item, i) => <div key={item}><b>0{i + 1}</b><span>{item.split('|')[0]}</span><small>{item.split('|')[1]}</small>{i < 2 && <i />}</div>)}</div> }
+
+function Services() { return <><PageIntro kicker="Services / What we build" title="Make the work" accent="move better.">From a focused internal workflow to a customer-facing product, we bring strategy and implementation into the same room.</PageIntro><section className="section"><div className="wrap"><ServiceList /></div></section><section className="dark-section section"><div className="wrap split"><Reveal><div className="section-kicker light-kicker">A connected practice</div><h2>Start where<br /><em>the friction is.</em></h2></Reveal><Reveal delay={.1}><p className="big-copy">You do not have to know whether the answer is an agent, an automation, an API, or a new interface. Bring the workflow. We will help identify the smallest useful system.</p></Reveal></div></section><Cta /></> }
+function Process() { return <><PageIntro kicker="Process / How we work" title="Decisions made" accent="in the open.">Good implementation is a sequence of useful decisions. We keep each one visible, testable, and close to the business context.</PageIntro><section className="section"><div className="wrap"><div className="process-list">{processSteps.map(([number, title, text], i) => <Reveal key={number} delay={i * .06}><div className="process-item"><span className="process-number">{number}</span><div><h3>{title}</h3><p>{text}</p></div><span className="process-marker" aria-hidden="true">↘</span></div></Reveal>)}</div></div></section><section className="blue-section section"><div className="wrap split"><Reveal><div className="section-kicker light-kicker">The delivery posture</div><h2>Small releases.<br /><em>Real feedback.</em></h2></Reveal><Reveal delay={.1}><p className="big-copy">The first release is a learning instrument, not a monument. We make the unknowns visible early and leave the system easier to understand than we found it.</p></Reveal></div></section><Cta /></> }
+function Capabilities() { return <><PageIntro kicker="Capabilities / Technical scope" title="Built for the" accent="real stack.">The right implementation meets your existing systems where they are — and makes the next layer easier to operate.</PageIntro><section className="section"><div className="wrap capability-grid">{capabilities.map(([number, title, text], i) => <Reveal key={number} delay={i * .05}><article className="capability-item"><span>{number}</span><h2>{title}</h2><p>{text}</p></article></Reveal>)}</div></section><section className="dark-section section"><div className="wrap split"><Reveal><div className="section-kicker light-kicker">Integration principle</div><h2>Explicit access.<br /><em>Useful context.</em></h2></Reveal><Reveal delay={.1}><p className="big-copy">MCP integrations, APIs, and automations work best when permissions and context are deliberate. We build the connective tissue that keeps AI helpful and accountable.</p></Reveal></div></section><Cta /></> }
+function Contact() { const [sent, setSent] = useState(false); const submit = (event: FormEvent<HTMLFormElement>) => { event.preventDefault(); setSent(true) }; return <><PageIntro kicker="Contact / Start a project" title="Bring the" accent="real question.">Tell us what you are trying to improve, automate, or build. A useful first conversation starts with the workflow, not the buzzword.</PageIntro><section className="section"><div className="wrap contact-layout"><Reveal><div className="contact-aside"><div className="section-kicker">A good starting point</div><p className="big-copy">What is happening today? Where does the work slow down? What would a better version make possible?</p><p>Share the context you have. You do not need a polished brief.</p><a href="mailto:hello@derricode.com" className="email-link">hello@derricode.com ↗</a></div></Reveal><Reveal delay={.1}><form className="contact-form" onSubmit={submit}>{sent && <p className="form-status" role="status">Thanks — your note is ready for a practical follow-up.</p>}<label htmlFor="name">Name<input id="name" name="name" required autoComplete="name" /></label><label htmlFor="email">Email<input id="email" name="email" type="email" required autoComplete="email" /></label><label htmlFor="message">What are you working through?<textarea id="message" name="message" rows={5} required /></label><button className="button button-blue" type="submit">Send the context <span>↗</span></button></form></Reveal></div></section></> }
+
+function App() { const [route, setRoute] = useState<RouteKey>(normalizePath); const [menuOpen, setMenuOpen] = useState(false); useEffect(() => { const onPop = () => { setRoute(normalizePath()); setMenuOpen(false); window.scrollTo({ top: 0, behavior: 'auto' }) }; window.addEventListener('popstate', onPop); return () => window.removeEventListener('popstate', onPop) }, []); const Page = route === '/' ? Home : route === '/services' ? Services : route === '/process' ? Process : route === '/capabilities' ? Capabilities : Contact; return <div className="site-shell"><a className="skip-link" href="#main-content">Skip to content</a><header className="nav wrap"><Link className="brand" href="/" aria-label="Derricode home"><span className="brand-mark">D</span><span>DERRICODE</span></Link><button className="menu-button" aria-expanded={menuOpen} aria-controls="primary-nav" onClick={() => setMenuOpen(!menuOpen)}>Menu <span>{menuOpen ? '×' : '＋'}</span></button><nav id="primary-nav" className={menuOpen ? 'is-open' : ''} aria-label="Primary navigation">{navItems.slice(1).map((item) => <Link key={item.href} href={item.href} onClick={() => setMenuOpen(false)}>{item.label}</Link>)}<Link className="nav-cta" href="/contact" onClick={() => setMenuOpen(false)}>Start a conversation <span>↗</span></Link></nav></header><main id="main-content" tabIndex={-1}><AnimatePresence mode="wait"><motion.div key={route} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: .3 }}><Page /></motion.div></AnimatePresence></main><footer className="footer wrap"><span>© {new Date().getFullYear()} DERRICODE</span><span>AI systems, automations, and applications.</span><Link href="/">Back to top ↑</Link></footer></div> }
 
 export default App
