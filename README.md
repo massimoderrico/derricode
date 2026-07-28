@@ -65,6 +65,7 @@ The implementation followed the existing frontend-product-build workflow and its
 
 - UI/UX Pro Max package: https://www.npmjs.com/package/uipro-cli
 - UI/UX Pro Max reference: https://github.com/nextlevelbuilder/ui-ux-pro-max-skill
+- 21st.dev component reference: https://21st.dev/
 - gstack workflows and `/design-consultation`, `/design-review`, `/qa`, `/review`: https://github.com/garrytan/gstack
 - p5.js: https://p5js.org/
 
