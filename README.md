@@ -27,7 +27,8 @@ The app uses a small client-side router built on the History API, so each page h
 - `/services` — AI implementation, AI automation, and application/integration services
 - `/process` — Four-stage delivery approach
 - `/capabilities` — Web, mobile, APIs, MCP, internal AI tools, and automation capabilities
-- `/contact` — Accessible project-intake form and direct email CTA
+- `/contact` — Accessible project-intake form that opens an explicitly labeled email draft, plus direct email CTA
+- Unknown paths — Branded 404 page with a route back home
 
 Shared navigation and footer are rendered around every route. The nav includes a mobile menu, a skip link, visible focus states, keyboard-friendly native controls, and touch-sized targets.
 
@@ -37,7 +38,7 @@ Shared navigation and footer are rendered around every route. The nav includes a
 - **Color system:** Decisive blue, white, and black. `#195cff` is the action and signal accent; white surfaces carry readable content; black and blue sections provide contrast.
 - **Typography:** Space Grotesk provides a technical editorial voice for headings, Manrope keeps body copy readable, and DM Mono is reserved for operational labels and metadata.
 - **Composition:** Editorial section transitions, a dark system-map visual, blue signal strip, long-form service rows, process timeline, capability index, and focused CTA. No fake dashboard numbers, stock imagery, generic testimonial blocks, or invented social proof.
-- **Motion:** `framer-motion` handles route transitions, hero entrance, and in-view section reveals. `useReducedMotion()` removes reveal distance/duration when requested, and CSS disables smooth scrolling and transform-based hover motion in reduced-motion mode.
+- **Motion:** `framer-motion` handles route transitions, hero entrance, and in-view section reveals. Every motion surface uses `useReducedMotion()`; reduced motion uses zero duration and no opacity/distance/scale changes. CSS also disables smooth scrolling and transform-based hover motion.
 - **Content discipline:** Copy is specific to implementation, automation, full-stack products, APIs, and MCP. No invented clients, awards, testimonials, metrics, or unsupported claims.
 
 ## Frontend design workflows used
@@ -69,5 +70,5 @@ The setup generated the repository's `CLAUDE.md` gstack instructions and `.claud
 
 ## Notes
 
-- The contact form is an accessible local intake interaction; its submission state is intentionally local until the operating email/form endpoint is selected. Direct contact is `hello@derricode.com`.
-- No Vercel deployment was performed; this remains a standard Vite app suitable for a static build pipeline.
+- The contact form is an honest email-draft workflow: it validates required fields, opens a pre-addressed draft to `hello@derricode.com`, and explicitly says no message has been sent until the visitor sends it.
+- `vercel.json` rewrites all deep links to the Vite entry point for SPA routing. No Vercel deployment was performed; direct deployed-route verification remains pending Op's deployment.
