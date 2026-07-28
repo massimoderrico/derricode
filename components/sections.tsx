@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import React from 'react'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { capabilities, processSteps, services } from '@/content/site'
 import { buildContactMailto } from '@/lib/contact'
 import { Reveal } from './motion'
@@ -11,7 +11,11 @@ import type { ReactNode } from 'react'
 export function PageIntro({ kicker, title, accent, children }: { kicker: string; title: string; accent: string; children: ReactNode }) { return <section className="page-intro wrap"><Reveal><p className="eyebrow"><span className="pulse" />{kicker}</p><h1>{title}<br /><em>{accent}</em></h1><p className="lede">{children}</p></Reveal></section> }
 
 function NetworkMark() { return <svg className="network-mark" viewBox="0 0 420 300" role="img" aria-label="Connected nodes representing a business system"><path className="wire" d="M42 224 126 81 226 164 316 50 378 223 226 164 126 241Z" /><path className="wire faint" d="m42 224 184-60 152 59M126 81l190-31M126 241l100-77" />{[[42,224,'small'],[126,81,'small'],[226,164,'core-node'],[316,50,'small'],[378,223,'small'],[126,241,'small']].map(([x, y, c]) => <circle key={`${x}-${y}`} className={`node ${c}`} cx={x} cy={y} r={c === 'core-node' ? 18 : 9} />)}<circle className="core-ring" cx="226" cy="164" r="34" /><text x="226" y="170" textAnchor="middle">D</text></svg> }
-function HeroArt() { return <motion.div className="hero-art" initial={{ opacity: 0, scale: .98 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: .7 }}><div className="art-label">SYSTEM MAP / 001</div><NetworkMark /><div className="art-caption"><span>Business need in. Useful system out.</span><span className="mono">[ BUILD / ITERATE ]</span></div><div className="art-index">01—04</div></motion.div> }
+function HeroArt() {
+  const reducedMotion = useReducedMotion()
+  const isReduced = reducedMotion === true
+  return <motion.div className="hero-art" initial={{ opacity: isReduced ? 1 : 0, scale: isReduced ? 1 : .98 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: isReduced ? 0 : .7 }}><div className="art-label">SYSTEM MAP / 001</div><NetworkMark /><div className="art-caption"><span>Business need in. Useful system out.</span><span className="mono">[ BUILD / ITERATE ]</span></div><div className="art-index">01—04</div></motion.div>
+}
 
 export function ServiceList() { return <div className="service-list">{services.map((service, i) => <Reveal key={service.number} delay={i * .08}><article className="service-row"><span className="service-number">{service.number}</span><div className="service-symbol" aria-hidden="true">{service.number === '01' ? '◎' : service.number === '02' ? '↻' : '⌘'}</div><div className="service-title"><h3>{service.title}</h3><p>{service.summary}</p></div><p className="service-detail">{service.detail}</p><span className="service-arrow" aria-hidden="true">↗</span></article></Reveal>)}</div> }
 export function SystemFlow() { return <div className="system-flow">{['Agents|Reason over approved context', 'Automations|Move work between systems', 'Software|Make the result usable'].map((item, i) => <div key={item}><b>0{i + 1}</b><span>{item.split('|')[0]}</span><small>{item.split('|')[1]}</small>{i < 2 && <i />}</div>)}</div> }

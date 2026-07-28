@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { Navigation } from '@/components/navigation'
 
+// oxlint-disable-next-line react/only-export-components -- App Router metadata must be exported from layout.tsx.
 export const metadata: Metadata = {
   title: 'Derricode — Make the next move useful.',
   description: 'Derricode is an AI implementation and software studio for useful systems, automations, and applications.',

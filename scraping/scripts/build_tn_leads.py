@@ -8,7 +8,7 @@ from openpyxl.worksheet.table import Table, TableStyleInfo
 OUT='/home/massimo/derricode_tennessee_10k_leads.xlsx'
 TODAY=str(date.today())
 HEADERS=['Business Name','Category','Owner Name','Owner Title','Owner LinkedIn URL','Public Business Email','Public Business Phone','Owner Public Business Email','Owner Public Business Phone','Address','City','State','ZIP','Website URL','Website Status','Website Evidence','Source URL','Research Date','Mockup HTML Path','Notes']
-UA={'User-Agent':'Hermes-Scrapy-v2-public-business-research/1.0 (lawful public data; no access-control bypass)'}
+UA={'User-Agent':'Hermes-Requests-v2-public-business-research/1.0 (lawful public data; no access-control bypass)'}
 CITIES=['Franklin','Brentwood','Nolensville','Spring Hill','Thompsons Station','Fairview','Hendersonville','Gallatin','Mount Juliet','Lebanon','Smyrna','La Vergne','Murfreesboro','Clarksville','Columbia','Dickson','Ashland City','Goodlettsville','White House','Portland','Shelbyville','Tullahoma','Cookeville','Johnson City','Kingsport','Bristol','Knoxville','Chattanooga','Jackson','Memphis']
 QUERIES=[('Roofing contractor','roofing'),('Solar installation','solar installation'),('Gutter contractor','gutters'),('Siding contractor','siding'),('HVAC contractor','HVAC'),('Plumbing contractor','plumbing'),('Electrical contractor','electrical contractor'),('Window contractor','windows')]
 
