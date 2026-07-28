@@ -1,6 +1,6 @@
 # Derricode — AI implementation & software studio
 
-A production-ready, responsive landing page for Derricode. The site makes the studio's three primary offerings explicit: AI implementation for businesses, AI automations and workflow systems, and full-stack application development across web, mobile, and MCP integrations.
+A production-ready, responsive landing page for Derricode. The site tells a fuller brand story: why AI implementation matters, Derricode's practical point of view, three service pillars, how agents/automation/software fit together, the delivery process, technical capabilities, and what it is like to work together.
 
 **Local path:** `/home/massimo/derricode`
 
@@ -15,39 +15,36 @@ Build and verify:
 
 ```bash
 npm run build       # TypeScript + Vite production build
-npm run lint        # ESLint
+npm run lint        # oxlint
+npm run preview     # local production preview
 ```
 
 ## Design decisions
 
-- **Surface:** Decide / Learn. The composition moves from a clear three-part position (hero), to service descriptions, outcome-oriented principles, a practical delivery process, and a direct contact CTA.
-- **Visual language:** Original “field notes” system: warm paper background, ink-black utility sections, signal orange, and a restrained lime/blue node palette. Typography pairs Space Grotesk for decisive headings with Manrope for readable body copy and DM Mono for operational labels.
-- **Anti-slop choices:** No invented metrics, testimonials, logos, stock imagery, generic feature-card grid, or unsupported claims. The network diagram is a small original SVG visual that communicates connected systems rather than pretending to be product telemetry.
-- **Motion:** `framer-motion` handles reveal and in-view transitions. `useReducedMotion()` disables distance-based motion for users who prefer reduced motion; CSS also disables smooth scrolling in that mode.
-- **Accessibility:** Semantic sections and landmarks, descriptive SVG label, visible link targets, native `mailto:` CTA, keyboard-friendly anchor navigation, readable contrast, and mobile hit targets.
+- **Surface:** Decide / Learn. The narrative moves from the business problem, to Derricode's point of view, to services, system architecture, delivery process, capabilities, working relationship, and a direct contact CTA.
+- **Color system:** Decisive blue, white, and black. `#195cff` is the intentional action and signal accent; white surfaces carry readable content; black sections provide contrast and make the blue feel purposeful. The previous orange/lime palette has been removed.
+- **Typography:** Space Grotesk provides a technical editorial voice for headings, Manrope keeps body copy readable, and DM Mono is reserved for operational labels and section metadata.
+- **Composition:** The page uses editorial section transitions, a dark system-map hero visual, a blue signal strip, long-form service rows, process timelines, and a focused CTA rather than a compact feature-card pitch.
+- **Content discipline:** No invented client logos, testimonials, awards, metrics, case studies, or unsupported claims. Copy describes observable ways of working and specific technical capabilities only.
+- **Motion:** `framer-motion` handles hero entrance and in-view reveals. `useReducedMotion()` removes reveal distance for users who prefer reduced motion; CSS also disables smooth scrolling in that mode.
+- **Accessibility:** Semantic sections and landmarks, a logical heading hierarchy, descriptive SVG label, native links/buttons, visible link targets, readable contrast, and mobile-friendly hit areas.
 
 ## Dependencies
 
 - React + TypeScript + Vite
-- `framer-motion` — used in `src/App.tsx` for hero reveals and service-row in-view transitions.
-- `uipro-cli` (dev dependency, v2.2.3) — the current UI/UX Pro Max CLI package verified from the package registry and its official project documentation. It was run locally during setup to confirm the CLI is available.
+- `framer-motion` — used in `src/App.tsx` for hero entrance and section reveals.
+- `uipro-cli` (dev dependency, v2.2.3) — the current UI/UX Pro Max CLI package verified from the package registry and its official project documentation. Its quality checklist informed the composition, restrained palette, accessibility, responsive behavior, and reduced-motion treatment.
 
 ### UI/UX Pro Max verification
 
 Official project: https://github.com/nextlevelbuilder/ui-ux-pro-max-skill
 Package: https://www.npmjs.com/package/uipro-cli
 
-The package's documented role is installing the UI/UX Pro Max skill for AI coding assistants. For this site, its workflow was used as a design-quality checklist (composition first, restrained palette, accessibility, responsive behavior, reduced motion) rather than importing a generic component template. The revision keeps the original 21st.dev-inspired editorial structure while making the service positioning immediately legible.
+The package's documented role is installing the UI/UX Pro Max skill for AI coding assistants. Derricode does not copy a component or proprietary code; the layout, copy, system-map visual, tokens, and interaction design are original to this site.
 
 MCP is used here in its technical sense: the Model Context Protocol, which can connect AI assistants to explicitly approved tools and data through MCP servers or client integrations. It is not a claim of a proprietary MCP platform.
-
-## 21st.dev reference
-
-Public reference source: https://21st.dev/
-
-The page was reachable publicly during project setup (HTTP 200). Derricode does **not** copy a 21st.dev component or its proprietary code. The adaptation is at the principle level: a strong editorial hero, compact operational labels, a visible visual system, and a deliberate “how it works” progression. The resulting copy, node diagram, color system, layout, and interaction design are original to Derricode.
 
 ## Notes
 
 - The contact address is intentionally a direct `mailto:hello@derricode.com` CTA and can be replaced with a form endpoint when the operating workflow is selected.
-- No Vercel deployment was performed; the project is configured as a standard Vite app suitable for Vercel's static build pipeline.
+- No Vercel deployment was performed; the project remains a standard Vite app suitable for a static build pipeline.
