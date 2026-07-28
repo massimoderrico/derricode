@@ -34,7 +34,7 @@ This version is a full visual reset toward a premium digital studio: editorial t
 
 The palette keeps the locked brand constraints: warm white foundation, blue signal (`#1d5cff`), and black contrast (`#111`). **Cormorant Garamond** is the display voice for hero headlines, page titles, section statements, and major editorial moments; **Manrope** carries body copy, navigation, buttons, labels, and supporting UI. Both are loaded through `next/font/google` in the App Router, avoiding render-blocking stylesheet imports and removing DM Sans from the system. Monospace, debug labels, system maps, terminal framing, dense technical rails, fake dashboards, decorative metrics, gradients, glassmorphism, stock imagery, invented testimonials, and generic icon-card grids were intentionally removed.
 
-The visual composition borrows principles—not layouts or identity—from premium reference families including Apple, Framer, Stripe, and SpaceX: confident scale, sparse surfaces, clear contrast, and motion that supports continuity. The abstract hero uses CSS geometry rather than p5/WebGL so it stays light, graceful, and secondary to the message.
+The visual composition borrows principles—not layouts or identity—from premium reference families including Apple, Framer, Stripe, SpaceX, and the public 21st.dev component ecosystem: confident scale, sparse surfaces, clear contrast, and motion that supports continuity. From 21st.dev, the implementation adapts public interaction principles such as staggered entrances, directional continuity, subtle hover feedback, and animated underlines—not copied components or proprietary layouts. The abstract hero uses CSS geometry rather than p5/WebGL so it stays light, graceful, and secondary to the message.
 
 ## Motion and accessibility
 
