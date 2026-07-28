@@ -1,6 +1,6 @@
-# Derricode — Turn possibility into motion.
+# Derricode — Make the next useful thing.
 
-Derricode is an AI implementation and software studio for businesses. The site positions the studio as the connective layer between a real business constraint and a useful system: AI implementation, workflow automation, full-stack web/mobile applications, APIs, and MCP integrations.
+Derricode is an AI implementation and software studio for businesses. We help teams turn complex opportunities into clear, working systems through AI implementation, workflow systems, full-stack web/mobile products, APIs, and MCP integrations.
 
 ## Run locally
 
@@ -21,52 +21,41 @@ npm run start
 
 ## Routes
 
-- `/` — the new “possibility into motion” story, focused system visualization, point of view, and CTA
-- `/services` — AI implementation, workflow automation, applications, APIs, and integrations
-- `/process` — four-stage delivery approach
-- `/capabilities` — web, mobile, APIs, MCP, internal tools, and automation
-- `/contact` — accessible project-intake form that opens an email draft
-- unknown paths — explicit branded 404 response with HTTP 404
+- `/` — point of view, business value, and the studio narrative
+- `/services` — three offering pillars: AI implementation, workflow systems, and digital products
+- `/process` — consultative four-step delivery approach
+- `/capabilities` — technical range presented as a capability system, not documentation
+- `/contact` — calm, high-touch project intake with an honest email-draft flow
+- unknown paths — branded 404 response with HTTP 404
 
-## New design concept: The Operating Loop
+## Art direction
 
-The redesign treats Derricode as the operating loop between **context → connection → interface**. Instead of a generic agency landing page, the composition behaves like a system map: large editorial typography establishes the business decision, a dark technical field visualizes the system underneath it, and the page progressively moves from point of view to delivery posture.
+This version is a full visual reset toward a premium digital studio: editorial typography, generous white space, strong black/blue moments, restrained rules, and one quiet abstract hero composition. The primary surface is **Decide / Learn**: each route makes one business idea land before offering the next step.
 
-- **White is the foundation**: clarity, room to think, and the visible business context.
-- **Blue (`#195cff`) is the signal**: action, connection, and the moment an idea becomes an implemented loop.
-- **Black (`#080b12`) is the contrast layer**: technical depth, infrastructure, and honest boundaries.
-- **Space Grotesk / Manrope / DM Mono** create a deliberate display, body, and system-label hierarchy.
-- Layouts use editorial splits, numbered process rails, asymmetric capability cells, and a blue/black closing panel instead of repeated centered card grids.
+The palette keeps the locked brand constraints: warm white foundation, blue signal (`#1d5cff`), black contrast (`#111`). Manrope is used for display hierarchy and DM Sans for readable supporting text. Monospace, debug labels, system maps, terminal framing, dense technical rails, fake dashboards, decorative metrics, gradients, glassmorphism, stock imagery, invented testimonials, and generic icon-card grids were intentionally removed.
 
-## Purposeful p5/WebGL system visualization
+The visual composition borrows principles—not layouts or identity—from premium reference families including Apple, Framer, Stripe, and SpaceX: confident scale, sparse surfaces, clear contrast, and motion that supports continuity. The abstract hero uses CSS geometry rather than p5/WebGL so it stays light, graceful, and secondary to the message.
 
-`components/system-visual.tsx` contains the one focused interactive visual: a small p5.js 1.11.3 instance running in WebGL mode inside the home hero. It renders a sparse node graph, technical grid, depth movement, and a blue core node to express the Derricode story without turning the full website into an unmaintainable canvas.
+## Motion and accessibility
 
-Performance choices include `pixelDensity(1)`, a capped 30 FPS loop, a small fixed node set, no DOM work inside `draw()`, and cleanup on unmount. `prefers-reduced-motion` is detected before instantiating p5; reduced-motion users receive a static CSS node-map fallback and a clear `STATIC / REDUCED MOTION` label.
+Framer Motion powers page entrances and section reveals. `useReducedMotion()` and CSS reduced-motion rules remove transforms and durations for users who prefer less motion. The site includes semantic landmarks, a skip link, keyboard-friendly native controls, visible focus states, labeled form fields, responsive navigation, and 44px minimum interactive targets.
 
-## Motion, accessibility, and performance
-
-Framer Motion powers page entrance and section reveal transitions. Every motion wrapper uses `useReducedMotion()` and falls back to static/zero-duration behavior. CSS also disables scroll and hover transforms under `prefers-reduced-motion`.
-
-The site keeps semantic `header`, `nav`, `main`, `section`, `article`, and `footer` landmarks; a skip link; native links and buttons; visible `:focus-visible` states; an accessible mobile navigation with `aria-expanded`; labeled form fields; keyboard-friendly controls; responsive layouts; and direct App Router route behavior. Contact is intentionally honest: the form validates locally and opens a pre-addressed `mailto:hello@derricode.com` draft; nothing is claimed to be sent until the visitor sends it.
+Contact is intentionally honest: the form validates locally and opens a pre-addressed `mailto:hello@derricode.com` draft. Nothing is claimed to be sent until the visitor reviews and sends it.
 
 ## Structure
 
-- `app/` — Next.js 16 App Router layouts, routes, metadata, and branded not-found handling
-- `components/` — navigation, motion wrappers, route sections, and the focused WebGL visualization
+- `app/` — Next.js App Router layouts, routes, metadata, and branded 404 handling
+- `components/` — navigation, motion primitives, and art-directed route sections
 - `content/` — structured services, process, and capability copy
-- `lib/` — contact helper
-- `public/` — static assets
+- `lib/` — contact helper and route utilities
 - `scripts/smoke.mjs` — production-server route and behavior smoke test
 
-## Design workflow references
+## Design references
 
-The implementation followed the existing frontend-product-build workflow and its Decide/Learn narrative discipline. It also references the UI UX Pro Max / 21st.dev ecosystem for design-system thinking and component quality without copying an external site:
+- Apple principles: https://www.apple.com/
+- Framer principles: https://www.framer.com/
+- Stripe principles: https://stripe.com/
+- SpaceX principles: https://www.spacex.com/
+- claude-design and popular-web-designs guidance were used as process/reference inputs; Derricode's layouts and copy remain original.
 
-- UI/UX Pro Max package: https://www.npmjs.com/package/uipro-cli
-- UI/UX Pro Max reference: https://github.com/nextlevelbuilder/ui-ux-pro-max-skill
-- 21st.dev component reference: https://21st.dev/
-- gstack workflows and `/design-consultation`, `/design-review`, `/qa`, `/review`: https://github.com/garrytan/gstack
-- p5.js: https://p5js.org/
-
-No fabricated metrics, testimonials, client logos, or unsupported claims were added. No deployment is performed by this task; Revi should review the complete redesign before Op redeploys.
+No fabricated metrics, testimonials, client logos, or unsupported claims were added. No deployment is performed by this repository workflow.
