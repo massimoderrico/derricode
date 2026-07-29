@@ -52,6 +52,29 @@ export function SectionProgress() {
   return <motion.div className="section-progress" style={{ scaleX, transformOrigin: '0 50%' }} aria-hidden="true" />
 }
 
+type ScrollStoryItem = { number: string; title: string; text: string }
+
+function ScrollStoryItem({ item, index, total, progress, reduced }: { item: ScrollStoryItem; index: number; total: number; progress: ReturnType<typeof useScroll>['scrollYProgress']; reduced: boolean }) {
+  const start = index / total
+  const end = (index + 1) / total
+  const opacity = useTransform(progress, [start, end], reduced ? [1, 1] : [.38, 1])
+  const x = useTransform(progress, [start, end], reduced ? [0, 0] : [-12, 0])
+  return <motion.li className="scroll-story-item" style={{ opacity: reduced ? 1 : opacity, x: reduced ? 0 : x }}>
+    <span className="scroll-story-number">{item.number}</span>
+    <div><h3>{item.title}</h3><p>{item.text}</p></div>
+  </motion.li>
+}
+
+// Adapted from the public 21st.dev Text Scroll animation, id 4905:
+// scroll-linked continuity, re-composed as a semantic process narrative.
+export function ScrollStory({ items }: { items: ScrollStoryItem[] }) {
+  const reduced = useReducedMotion() ?? true
+  const ref = useRef<HTMLOListElement>(null)
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start 72%', 'end 28%'] })
+  const progress = useSpring(scrollYProgress, reduced ? { stiffness: 1000, damping: 1000 } : { stiffness: 140, damping: 32, mass: .22 })
+  return <div className="scroll-story-layout"><aside className="scroll-story-aside" aria-hidden="true"><span>How we work</span><i><motion.b style={{ scaleY: reduced ? 1 : progress, transformOrigin: '0 0' }} /></i></aside><ol ref={ref} className="scroll-story-list">{items.map((item, index) => <ScrollStoryItem key={item.number} item={item} index={index} total={items.length} progress={scrollYProgress} reduced={reduced} />)}</ol></div>
+}
+
 export function PageMotion({ children, pageKey }: { children: ReactNode; pageKey: string }) {
   const reduced = useReducedMotion() ?? true
   return <><SectionProgress /><motion.div key={pageKey} initial={reduced ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduced ? 0 : .32, ease }}>{children}</motion.div></>
