@@ -1,7 +1,7 @@
 'use client'
 
-import { motion, useReducedMotion, useScroll, useSpring } from 'framer-motion'
-import type { ReactNode } from 'react'
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion'
+import React, { useRef, type ReactNode } from 'react'
 
  type RevealDirection = 'up' | 'left' | 'right'
 
@@ -21,6 +21,28 @@ export function StaggeredHeadline({ lines }: { lines: ReactNode[] }) {
 export function MagneticLink({ children, className = '' }: { children: ReactNode; className?: string }) {
   const reduced = useReducedMotion() ?? true
   return <motion.span className={`magnetic-link ${className}`} whileHover={reduced ? undefined : { x: 3 }} whileTap={reduced ? undefined : { scale: .98 }} transition={{ duration: reduced ? 0 : .2, ease }}>{children}</motion.span>
+}
+
+// Adapted from the public 21st.dev Interactive Hover Button, id 685.
+export function RegistryHoverButton({ children, className = '' }: { children: ReactNode; className?: string }) {
+  const reduced = useReducedMotion() ?? true
+  return <motion.span className={`registry-hover-button ${className}`} whileHover={reduced ? undefined : { scale: 1 }} whileTap={reduced ? undefined : { scale: .98 }}>
+    <span className="registry-hover-label">{children}</span><span className="registry-hover-fill" aria-hidden="true" />
+  </motion.span>
+}
+
+// Adapted from the public 21st.dev Text Scroll animation, id 4905.
+function ScrollCharacter({ character, distance, progress, reduced }: { character: string; distance: number; progress: ReturnType<typeof useScroll>['scrollYProgress']; reduced: boolean }) {
+  const x = useTransform(progress, [0, 1], reduced ? [0, 0] : [distance * 10, 0])
+  const y = useTransform(progress, [0, 1], reduced ? [0, 0] : [Math.abs(distance) * 4, 0])
+  return <motion.span style={{ x, y }} aria-hidden="true">{character === ' ' ? '\u00a0' : character}</motion.span>
+}
+
+export function ScrollWord({ text }: { text: string }) {
+  const reduced = useReducedMotion() ?? true
+  const ref = useRef<HTMLSpanElement>(null)
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start 85%', 'end 35%'] })
+  return <span ref={ref} className="scroll-word" aria-label={text}>{text.split('').map((character, index) => <ScrollCharacter key={`${character}-${index}`} character={character} distance={index - (text.length - 1) / 2} progress={scrollYProgress} reduced={reduced} />)}</span>
 }
 
 export function SectionProgress() {
