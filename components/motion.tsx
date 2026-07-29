@@ -42,7 +42,7 @@ export function ScrollWord({ text }: { text: string }) {
   const reduced = useReducedMotion() ?? true
   const ref = useRef<HTMLSpanElement>(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start 85%', 'end 35%'] })
-  return <span ref={ref} className="scroll-word" aria-label={text}>{text.split('').map((character, index) => <ScrollCharacter key={`${character}-${index}`} character={character} distance={index - (text.length - 1) / 2} progress={scrollYProgress} reduced={reduced} />)}</span>
+  return <span ref={ref} className="scroll-word"><span className="scroll-word-accessible">{text}</span><span className="scroll-word-visual" aria-hidden="true">{text.split('').map((character, index) => <ScrollCharacter key={`${character}-${index}`} character={character} distance={index - (text.length - 1) / 2} progress={scrollYProgress} reduced={reduced} />)}</span></span>
 }
 
 export function SectionProgress() {
