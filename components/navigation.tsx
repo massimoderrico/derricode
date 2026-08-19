@@ -14,6 +14,6 @@ export function Navigation() {
       {items.map(([href, label]) => <Link key={href} href={href} onClick={() => setOpen(false)}>{label}</Link>)}
       <Link className="nav-cta" href="/contact" onClick={() => setOpen(false)}>Start a conversation <ArrowUpRight aria-hidden="true" size={16} /></Link>
     </nav>
-    <button className="menu-button" aria-expanded={open} aria-controls="primary-nav" onClick={() => setOpen(!open)}>Menu {open ? <X aria-hidden="true" size={18} /> : <Menu aria-hidden="true" size={18} />}</button>
+    <button type="button" className="menu-button" aria-expanded={open} aria-controls="primary-nav" onClick={() => setOpen(!open)}>Menu {open ? <X aria-hidden="true" size={18} /> : <Menu aria-hidden="true" size={18} />}</button>
   </div></header>
 }
