@@ -1,53 +1,62 @@
-# Derricode — AI implementation & software studio
+# Derricode — Make the next useful thing.
 
-A production-ready, responsive landing page for Derricode. The site makes the studio's three primary offerings explicit: AI implementation for businesses, AI automations and workflow systems, and full-stack application development across web, mobile, and MCP integrations.
+Derricode is an AI implementation and software studio for businesses. We help teams turn complex opportunities into clear, working systems through AI implementation, workflow systems, full-stack web/mobile products, APIs, and MCP integrations.
 
-**Local path:** `/home/massimo/derricode`
-
-## Setup
+## Run locally
 
 ```bash
 npm install
 npm run dev
 ```
 
-Build and verify:
+Production checks:
 
 ```bash
-npm run build       # TypeScript + Vite production build
-npm run lint        # ESLint
+npm run lint
+npm run build
+npm run test:smoke
+npm audit --omit=dev --audit-level=high
+npm run start
 ```
 
-## Design decisions
+## Routes
 
-- **Surface:** Decide / Learn. The composition moves from a clear three-part position (hero), to service descriptions, outcome-oriented principles, a practical delivery process, and a direct contact CTA.
-- **Visual language:** Original “field notes” system: warm paper background, ink-black utility sections, signal orange, and a restrained lime/blue node palette. Typography pairs Space Grotesk for decisive headings with Manrope for readable body copy and DM Mono for operational labels.
-- **Anti-slop choices:** No invented metrics, testimonials, logos, stock imagery, generic feature-card grid, or unsupported claims. The network diagram is a small original SVG visual that communicates connected systems rather than pretending to be product telemetry.
-- **Motion:** `framer-motion` handles reveal and in-view transitions. `useReducedMotion()` disables distance-based motion for users who prefer reduced motion; CSS also disables smooth scrolling in that mode.
-- **Accessibility:** Semantic sections and landmarks, descriptive SVG label, visible link targets, native `mailto:` CTA, keyboard-friendly anchor navigation, readable contrast, and mobile hit targets.
+- `/` — point of view, business value, and the studio narrative
+- `/services` — three offering pillars: AI implementation, workflow systems, and digital products
+- `/process` — consultative four-step delivery approach
+- `/capabilities` — technical range presented as a capability system, not documentation
+- `/contact` — calm, high-touch project intake with an honest email-draft flow
+- unknown paths — branded 404 response with HTTP 404
 
-## Dependencies
+## Art direction
 
-- React + TypeScript + Vite
-- `framer-motion` — used in `src/App.tsx` for hero reveals and service-row in-view transitions.
-- `uipro-cli` (dev dependency, v2.2.3) — the current UI/UX Pro Max CLI package verified from the package registry and its official project documentation. It was run locally during setup to confirm the CLI is available.
+This version is a full visual reset toward a premium digital studio: editorial typography, generous white space, strong black/blue moments, restrained rules, and one quiet abstract hero composition. The primary surface is **Decide / Learn**: each route makes one business idea land before offering the next step.
 
-### UI/UX Pro Max verification
+The palette keeps the locked brand constraints: warm white foundation, blue signal (`#2171b5`), and black contrast (`#111`). **Cormorant Garamond** is the display voice for hero headlines, page titles, section statements, and major editorial moments; **Manrope** carries body copy, navigation, buttons, labels, and supporting UI. Both are loaded through `next/font/google` in the App Router, avoiding render-blocking stylesheet imports and removing DM Sans from the system. Interface symbols use the maintained `lucide-react` icon library rather than emoji or text glyphs. Monospace, debug labels, system maps, terminal framing, dense technical rails, fake dashboards, decorative metrics, gradients, glassmorphism, stock imagery, invented testimonials, and generic icon-card grids were intentionally removed.
 
-Official project: https://github.com/nextlevelbuilder/ui-ux-pro-max-skill
-Package: https://www.npmjs.com/package/uipro-cli
+The visual composition borrows principles—not layouts or identity—from premium reference families including Apple, Framer, Stripe, SpaceX, and the public 21st.dev component ecosystem: confident scale, sparse surfaces, clear contrast, and motion that supports continuity. From 21st.dev, the implementation adapts public interaction principles such as staggered entrances, directional continuity, subtle hover feedback, and animated underlines—not copied components or proprietary layouts. The abstract hero uses CSS geometry rather than p5/WebGL so it stays light, graceful, and secondary to the message.
 
-The package's documented role is installing the UI/UX Pro Max skill for AI coding assistants. For this site, its workflow was used as a design-quality checklist (composition first, restrained palette, accessibility, responsive behavior, reduced motion) rather than importing a generic component template. The revision keeps the original 21st.dev-inspired editorial structure while making the service positioning immediately legible.
+The current motion layer includes two adapted public registry components retrieved from the 21st.dev public catalog: **Interactive Hover Button** (component ID `685`, `https://21st.dev/@interactive-hover-button/components/default`) and **Text Scroll animation** (component ID `4905`, `https://21st.dev/@text-scroll-animation/components/default`). Their source/demo artifacts were inspected from the public CDN (`https://cdn.21st.dev/bundled/969.html` and `https://cdn.21st.dev/larsen66/text-scroll-animation/default/bundle.1757691032938.html`) and adapted into local Framer Motion components; the original gradient-heavy Spotlight Card (ID `2358`) was inspected and intentionally rejected to preserve the no-gradient direction. The configured 21st MCP endpoint returned `401 Unauthorized` from this subagent runtime, so this pass used the public catalog/CDN artifacts rather than claiming an MCP `search`/`get_component` response. Both adaptations preserve semantic content, keyboard accessibility, mobile visibility, and static/zero-transform behavior under reduced motion; the interactive registry button has an explicit 44px minimum target.
 
-MCP is used here in its technical sense: the Model Context Protocol, which can connect AI assistants to explicitly approved tools and data through MCP servers or client integrations. It is not a claim of a proprietary MCP platform.
+Framer Motion powers page entrances, staggered editorial headline reveals, a quiet scroll-progress rail, the process page's pinned progress narrative, tactile CTA feedback, and directional section/list continuity. The new process narrative re-composes the public Text Scroll animation's scroll-linked continuity into a semantic ordered list: a restrained 12px directional lift and a single progress rule, with no scroll hijacking or looping behavior. The motion layer is intentionally short and secondary to the message: no looping spectacle, gradients, glass, or cursor gimmicks. `useReducedMotion()` and CSS reduced-motion rules remove transforms, hide progress rails, and set durations to zero for users who prefer less motion; touch layouts keep the same content without hover-dependent meaning. The site includes semantic landmarks, a skip link, keyboard-friendly native controls, visible focus states, labeled form fields, responsive navigation, and explicit 44px minimum targets on the registry button, primary navigation CTA, and mobile menu button. Other text and footer links retain their visual styling but are not represented by a blanket 44px compliance claim.
 
-## 21st.dev reference
+Contact is intentionally honest: the form validates locally and opens a pre-addressed `mailto:hello@derricode.com` draft. Nothing is claimed to be sent until the visitor reviews and sends it.
 
-Public reference source: https://21st.dev/
+## Structure
 
-The page was reachable publicly during project setup (HTTP 200). Derricode does **not** copy a 21st.dev component or its proprietary code. The adaptation is at the principle level: a strong editorial hero, compact operational labels, a visible visual system, and a deliberate “how it works” progression. The resulting copy, node diagram, color system, layout, and interaction design are original to Derricode.
+- `app/` — Next.js App Router layouts, routes, metadata, and branded 404 handling
+- `components/` — navigation, motion primitives, and art-directed route sections
+- `content/` — structured services, process, and capability copy
+- `lib/` — contact helper and route utilities
+- `scripts/smoke.mjs` — production-server route and behavior smoke test
 
-## Notes
+## Design references
 
-- The contact address is intentionally a direct `mailto:hello@derricode.com` CTA and can be replaced with a form endpoint when the operating workflow is selected.
-- No Vercel deployment was performed; the project is configured as a standard Vite app suitable for Vercel's static build pipeline.
+- Apple principles: https://www.apple.com/
+- Framer principles: https://www.framer.com/
+- Stripe principles: https://stripe.com/
+- SpaceX principles: https://www.spacex.com/
+- 21st.dev public animation/component reference: https://21st.dev/
+- claude-design and popular-web-designs guidance were used as process/reference inputs; Derricode's layouts and copy remain original.
+
+No fabricated metrics, testimonials, client logos, or unsupported claims were added. No deployment is performed by this repository workflow.
